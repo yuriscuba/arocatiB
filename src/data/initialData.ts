@@ -1,0 +1,110 @@
+import { DiveLog, AdBannerConfig } from '../types';
+
+// Pre-generated digital signature vector data URL for sample preview
+const SAMPLE_SIGNATURE_DATA_URL_1 = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="120" viewBox="0 0 300 120"><path d="M 30 70 Q 50 20 80 45 T 120 75 Q 160 30 190 65 Q 230 100 270 50 M 60 90 L 250 85" fill="none" stroke="%230284c7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+const SAMPLE_SIGNATURE_DATA_URL_2 = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="120" viewBox="0 0 300 120"><path d="M 40 80 C 70 30, 90 20, 110 50 C 130 80, 140 30, 170 40 C 200 50, 220 80, 260 70 M 90 95 Q 160 85 240 90" fill="none" stroke="%230ea5e9" stroke-width="3.5" stroke-linecap="round"/></svg>';
+
+export const initialDives: DiveLog[] = [
+  {
+    id: 'dive-001',
+    diveNumber: 42,
+    category: 'instruction',
+    date: '2026-08-18',
+    timeIn: '09:45',
+    timeOut: '10:28',
+    siteName: 'Arrecife Palancar - La Catedral',
+    location: 'Cozumel, Quintana Roo, México',
+    maxDepth: 28.5,
+    bottomTime: 43,
+    waterType: 'salt',
+    temperature: 27,
+    weight: 5,
+    suitType: 'wetsuit_3mm',
+    visibility: 30,
+    visibilityRating: 'excellent',
+    startingPressure: 205,
+    endingPressure: 60,
+    gasMix: 'Nitrox EAN32',
+    courseName: 'PADI Advanced Open Water - Buceo Profundo',
+    instructorName: 'Carlos Méndez',
+    instructorNumber: 'PADI MSDT #384912',
+    instructorSignature: SAMPLE_SIGNATURE_DATA_URL_1,
+    signatureDate: '2026-08-18T11:00:00Z',
+    notes: 'Descenso controlado a lo largo de la pared hasta los 28.5m. Práctica de verificación de manómetro y lectura de color a profundidad (pérdida de rojo a 25m). Avistamiento de 2 tortugas carey y una morena verde gigante. Parada de seguridad de 3 minutos a 5 metros completada.',
+    buddies: 'Sofía Valdés, Lucas Meyer',
+    photos: [
+      {
+        id: 'photo-1',
+        url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+        caption: 'Descenso en la pared de Palancar',
+      },
+      {
+        id: 'photo-2',
+        url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80',
+        caption: 'Tortuga carey nadando entre gorgonias',
+      },
+      {
+        id: 'photo-3',
+        url: 'https://images.unsplash.com/photo-1682687220063-4742bd7fd538?auto=format&fit=crop&w=800&q=80',
+        caption: 'Chequeo de consola y ordenador a 28m',
+      },
+    ],
+    createdAt: '2026-08-18T11:15:00Z',
+    updatedAt: '2026-08-18T11:15:00Z',
+  },
+  {
+    id: 'dive-002',
+    diveNumber: 43,
+    category: 'recreational',
+    date: '2026-08-20',
+    timeIn: '11:15',
+    timeOut: '12:12',
+    siteName: 'Cenote Dos Ojos - Línea Barbie',
+    location: 'Tulum, Quintana Roo, México',
+    maxDepth: 10.4,
+    bottomTime: 57,
+    waterType: 'fresh',
+    temperature: 24,
+    weight: 3,
+    suitType: 'wetsuit_5mm',
+    visibility: 50,
+    visibilityRating: 'excellent',
+    startingPressure: 210,
+    endingPressure: 75,
+    gasMix: 'Aire 21%',
+    courseName: '',
+    instructorName: 'Mateo Rivera',
+    instructorNumber: 'Full Cave Diver / SSI DM-89211',
+    instructorSignature: SAMPLE_SIGNATURE_DATA_URL_2,
+    signatureDate: '2026-08-20T13:00:00Z',
+    notes: 'Inmersión caverna con visibilidad cristalina de más de 50 metros. Espectacular entrada de rayos de sol a través de las haloclinas y estalactitas milenarias. Flotabilidad neutra mantenida con patada de rana para no levantar sedimento.',
+    buddies: 'Laura Gómez, Alejandro Peña',
+    photos: [
+      {
+        id: 'photo-4',
+        url: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=800&q=80',
+        caption: 'Rayos de luz solar penetrando la caverna de Dos Ojos',
+      },
+      {
+        id: 'photo-5',
+        url: 'https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&w=800&q=80',
+        caption: 'Paso por columnas de piedra caliza subacuáticas',
+      },
+    ],
+    createdAt: '2026-08-20T13:20:00Z',
+    updatedAt: '2026-08-20T13:20:00Z',
+  },
+];
+
+export const initialAdConfig: AdBannerConfig = {
+  id: 'ad-dive-gear-01',
+  sponsorName: 'MARES & AQUALUNG PRO SHOP',
+  headline: 'Equipamiento de Buceo con 20% OFF',
+  subtext: 'Ordenadores Quad Air, reguladores de diafragma y aletas Quattro en tienda oficial.',
+  ctaText: 'Ver Promociones',
+  targetUrl: 'https://www.mares.com',
+  imageUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80',
+  badgeText: 'OFERTA ESPECIAL',
+  isActive: true,
+};

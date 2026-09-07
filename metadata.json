@@ -1,0 +1,6 @@
+{
+  "name": "Bitácora de Buceo",
+  "description": "Bitácora móvil e interactiva para buceos recreacionales y de instrucción con firma digital, fotos, i18n y exportación de código.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
