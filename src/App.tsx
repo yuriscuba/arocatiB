@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { 
   Award, 
   Waves, 
-  PlusCircle, 
   Search, 
   Filter, 
   Sparkles, 
@@ -15,7 +14,8 @@ import {
   CheckCircle,
   Wifi,
   Battery,
-  Signal
+  Signal,
+  Trash2
 } from 'lucide-react';
 import { DiveLog, DiveCategory, SupportedLanguage, UnitSystem, AdBannerConfig } from './types';
 import { translations } from './i18n/translations';
@@ -26,10 +26,9 @@ import { AdBanner } from './components/AdBanner';
 import { DiveCard } from './components/DiveCard';
 import { DiveFormModal } from './components/DiveFormModal';
 import { DiveDetailModal } from './components/DiveDetailModal';
-import { MobileCodeViewer } from './components/MobileCodeViewer';
 
-const LOCAL_STORAGE_KEY_DIVES = 'dive_logbook_dives_v1';
-const LOCAL_STORAGE_KEY_AD = 'dive_logbook_ad_v1';
+const LOCAL_STORAGE_KEY_DIVES = 'dive_logbook_dives_v3';
+const LOCAL_STORAGE_KEY_AD = 'dive_logbook_ad_v2';
 const LOCAL_STORAGE_KEY_LANG = 'dive_logbook_lang_v1';
 const LOCAL_STORAGE_KEY_UNITS = 'dive_logbook_unit_system_v1';
 
@@ -54,13 +53,15 @@ export default function App() {
   // Search query
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Dive logs state with localStorage persistence
+  // Dive logs state with localStorage persistence (clearing previous sample entries)
   const [dives, setDives] = useState<DiveLog[]>(() => {
     try {
+      localStorage.removeItem('dive_logbook_dives_v1');
+      localStorage.removeItem('dive_logbook_dives_v2');
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY_DIVES);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       }
     } catch (e) {
       console.error('Error loading dives from localStorage', e);
@@ -68,9 +69,10 @@ export default function App() {
     return initialDives;
   });
 
-  // Ad banner configuration with localStorage persistence
+  // Ad banner configuration with localStorage persistence (promoting Yuri Scuba Photographer)
   const [adConfig, setAdConfig] = useState<AdBannerConfig>(() => {
     try {
+      localStorage.removeItem('dive_logbook_ad_v1');
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY_AD);
       if (saved) {
         const parsed = JSON.parse(saved);
@@ -86,7 +88,6 @@ export default function App() {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [editingDive, setEditingDive] = useState<DiveLog | null>(null);
   const [selectedDiveDetail, setSelectedDiveDetail] = useState<DiveLog | null>(null);
-  const [showCodeViewer, setShowCodeViewer] = useState(false);
   const [isMobileFrame, setIsMobileFrame] = useState(false);
 
   // Sync to local storage
@@ -135,6 +136,17 @@ export default function App() {
     setDives((prev) => prev.filter((d) => d.id !== id));
   };
 
+  const handleClearAllDives = () => {
+    if (window.confirm(t.confirmClearAllRecords || '¿Deseas limpiar todos los registros de inmersiones?')) {
+      setDives([]);
+      try {
+        localStorage.removeItem(LOCAL_STORAGE_KEY_DIVES);
+      } catch (e) {
+        console.error('Error clearing dives', e);
+      }
+    }
+  };
+
   const openNewDiveModal = (categoryOverride?: DiveCategory) => {
     setEditingDive(null);
     if (categoryOverride) {
@@ -180,11 +192,8 @@ export default function App() {
         onLanguageChange={handleLanguageChange}
         unitSystem={unitSystem}
         onUnitSystemChange={handleUnitSystemChange}
-        showCodeViewer={showCodeViewer}
-        onToggleCodeViewer={() => setShowCodeViewer(!showCodeViewer)}
         isMobileFrame={isMobileFrame}
         onToggleMobileFrame={() => setIsMobileFrame(!isMobileFrame)}
-        onAddNewDive={() => openNewDiveModal()}
       />
 
       {/* Main Content Area */}
@@ -215,18 +224,6 @@ export default function App() {
 
           {/* Quick Stats telemetry bar */}
           <StatsBar dives={dives} language={language} unitSystem={unitSystem} />
-
-          {/* Architecture & Source Code Explorer (Conditional) */}
-          {showCodeViewer && (
-            <MobileCodeViewer language={language} />
-          )}
-
-          {/* Editable Ad Banner Widget */}
-          <AdBanner
-            config={adConfig}
-            onUpdateConfig={(newConfig) => setAdConfig(newConfig)}
-            language={language}
-          />
 
           {/* Categorization & Navigation Section */}
           <div className="mt-4 space-y-3">
@@ -277,8 +274,8 @@ export default function App() {
               </button>
             </div>
 
-            {/* Section Description & Dedicated "Añadir nuevo buceo" button visible in both sections */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/60 border border-slate-800/80 p-3.5 rounded-xl">
+            {/* Section Description */}
+            <div className="bg-slate-900/60 border border-slate-800/80 p-3.5 rounded-xl">
               <div>
                 <h2 className="text-sm font-bold text-white flex items-center gap-1.5">
                   {selectedCategoryTab === 'instruction' ? (
@@ -299,41 +296,41 @@ export default function App() {
                     : t.recreationalDesc}
                 </p>
               </div>
-
-              {/* Explicit requirement: "Incluye un botón visible de 'Añadir nuevo buceo' en ambas secciones para permitir la creación de registros ilimitados." */}
-              <button
-                type="button"
-                onClick={() => openNewDiveModal(selectedCategoryTab)}
-                className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs shadow-md transition-all active:scale-95 shrink-0 ${
-                  selectedCategoryTab === 'instruction'
-                    ? 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 shadow-amber-950/40'
-                    : 'bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-300 hover:to-cyan-400 text-slate-950 shadow-cyan-950/40'
-                }`}
-                id={`btn-add-dive-section-${selectedCategoryTab}`}
-              >
-                <PlusCircle className="w-4 h-4" />
-                <span>{t.addNewDive}</span>
-              </button>
             </div>
 
-            {/* Search Filter input */}
-            <div className="relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t.searchPlaceholder}
-                className="w-full text-xs bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
-                id="search-dives-input"
-              />
-              {searchQuery && (
+            {/* Search Filter & Clean Records Action */}
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={t.searchPlaceholder}
+                  className="w-full text-xs bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                  id="search-dives-input"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="text-slate-400 hover:text-white text-xs absolute right-3 top-1/2 -translate-y-1/2 px-1 py-0.5"
+                  >
+                    &times;
+                  </button>
+                )}
+              </div>
+
+              {dives.length > 0 && (
                 <button
                   type="button"
-                  onClick={() => setSearchQuery('')}
-                  className="text-slate-400 hover:text-white text-xs absolute right-3 top-1/2 -translate-y-1/2 px-1 py-0.5"
+                  onClick={handleClearAllDives}
+                  className="flex items-center gap-1.5 px-3 py-2.5 text-xs text-rose-400 hover:text-rose-300 bg-rose-950/40 hover:bg-rose-950/70 border border-rose-900/60 rounded-xl font-medium transition-colors shrink-0"
+                  title={t.clearAllRecords}
+                  id="clear-all-dives-btn"
                 >
-                  &times;
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">{t.clearAllRecords}</span>
                 </button>
               )}
             </div>
@@ -370,29 +367,17 @@ export default function App() {
                     {t.startLogging}
                   </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => openNewDiveModal(selectedCategoryTab)}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-xl shadow-md transition-all active:scale-95"
-                >
-                  <PlusCircle className="w-4 h-4" />
-                  {t.addNewDive}
-                </button>
               </div>
             )}
           </div>
 
-          {/* Floating Action Button for Mobile Touch Access */}
-          <div className="fixed bottom-5 right-5 z-30 sm:hidden">
-            <button
-              type="button"
-              onClick={() => openNewDiveModal(selectedCategoryTab)}
-              className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-bold text-sm rounded-full shadow-lg shadow-cyan-500/30 active:scale-95 transition-transform"
-              id="mobile-floating-add-btn"
-            >
-              <PlusCircle className="w-5 h-5" />
-              <span>{t.addNewDive}</span>
-            </button>
+          {/* Bottom Promotional Ad Banner promoting Yuri Scuba Photographer */}
+          <div className="mt-8 pt-4 border-t border-slate-800/80">
+            <AdBanner
+              config={adConfig}
+              onUpdateConfig={(newConfig) => setAdConfig(newConfig)}
+              language={language}
+            />
           </div>
         </div>
       </main>

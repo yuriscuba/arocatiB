@@ -11,6 +11,15 @@ interface AdBannerProps {
 
 const SPONSOR_PRESETS: Partial<AdBannerConfig>[] = [
   {
+    sponsorName: 'YURI SCUBA PHOTOGRAPHER',
+    headline: 'Fotografía Subacuática Profesional',
+    subtext: 'Inmortaliza tus mejores inmersiones con fotos y vídeos de alta resolución en arrecifes y cenotes.',
+    ctaText: 'Ver Portafolio',
+    targetUrl: 'http://portal.yuriscuba.com/photographer',
+    imageUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80',
+    badgeText: 'FOTOGRAFÍA PRO',
+  },
+  {
     sponsorName: 'MARES DIVING',
     headline: 'Ordenadores Quad Air & Reguladores Dual',
     subtext: 'Máxima precisión bajo el agua con conectividad Bluetooth.',

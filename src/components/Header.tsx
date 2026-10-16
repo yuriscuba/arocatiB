@@ -2,10 +2,8 @@ import React from 'react';
 import { 
   Waves, 
   Globe, 
-  Code2, 
   Smartphone, 
   Monitor, 
-  PlusCircle, 
   Compass,
   Check,
   Gauge
@@ -18,11 +16,8 @@ interface HeaderProps {
   onLanguageChange: (lang: SupportedLanguage) => void;
   unitSystem: UnitSystem;
   onUnitSystemChange: (system: UnitSystem) => void;
-  showCodeViewer: boolean;
-  onToggleCodeViewer: () => void;
   isMobileFrame: boolean;
   onToggleMobileFrame: () => void;
-  onAddNewDive: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -30,11 +25,8 @@ export const Header: React.FC<HeaderProps> = ({
   onLanguageChange,
   unitSystem,
   onUnitSystemChange,
-  showCodeViewer,
-  onToggleCodeViewer,
   isMobileFrame,
   onToggleMobileFrame,
-  onAddNewDive,
 }) => {
   const t = translations[language];
 
@@ -70,33 +62,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Action Controls */}
         <div className="flex items-center gap-2">
-          {/* Quick Add Dive Button in header for desktop */}
-          <button
-            type="button"
-            onClick={onAddNewDive}
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold rounded-lg shadow-sm transition-all active:scale-95"
-            id="header-add-dive-btn"
-          >
-            <PlusCircle className="w-3.5 h-3.5" />
-            <span>{t.addNewDive}</span>
-          </button>
 
-          {/* Toggle Code Explorer */}
-          <button
-            type="button"
-            onClick={onToggleCodeViewer}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-lg border transition-all ${
-              showCodeViewer
-                ? 'bg-cyan-950 border-cyan-400 text-cyan-300 ring-1 ring-cyan-400'
-                : 'bg-slate-900 border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800'
-            }`}
-            title="Ver código fuente Flutter / React Native"
-            id="toggle-code-view-btn"
-          >
-            <Code2 className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="hidden md:inline">{t.viewCode}</span>
-            <span className="md:hidden">Código</span>
-          </button>
 
           {/* Mobile frame toggle */}
           <button

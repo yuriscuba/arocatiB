@@ -29,7 +29,8 @@ export const translations = {
     viewCode: 'Código Móvil (Flutter / React Native)',
     viewApp: 'Ver Aplicación',
     filterAll: 'Todos',
-    searchPlaceholder: 'Buscar por sitio, ubicación, curso o instructor...',
+    clearAllRecords: 'Limpiar registros',
+    confirmClearAllRecords: '¿Estás seguro de que deseas borrar todos los registros de inmersiones?',
     exportData: 'Exportar JSON',
     importData: 'Importar',
     
@@ -179,7 +180,8 @@ export const translations = {
     viewCode: 'Mobile Code (Flutter / React Native)',
     viewApp: 'View Application',
     filterAll: 'All',
-    searchPlaceholder: 'Search by site, location, course or instructor...',
+    clearAllRecords: 'Clear all records',
+    confirmClearAllRecords: 'Are you sure you want to clear all dive logs?',
     exportData: 'Export JSON',
     importData: 'Import',
     
@@ -329,7 +331,8 @@ export const translations = {
     viewCode: 'Code Mobile (Flutter / React Native)',
     viewApp: 'Voir l\'Application',
     filterAll: 'Tous',
-    searchPlaceholder: 'Rechercher par site, lieu, cours ou instructeur...',
+    clearAllRecords: 'Effacer toutes les plongées',
+    confirmClearAllRecords: 'Voulez-vous vraiment effacer tous les registres de plongée ?',
     exportData: 'Exporter JSON',
     importData: 'Importer',
     
